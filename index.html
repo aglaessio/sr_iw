@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Recursos</title>
+    <style>
+        :root {
+            --primary-color: #1a3e72; /* Azul principal MB Pay */
+            --secondary-color: #ff6b00; /* Laranja MB Pay */
+            --accent-color: #e74c3c; /* Vermelho para destaques */
+            --light-color: #f8f9fa; /* Fundo claro */
+            --dark-color: #212529; /* Texto escuro */
+            --success-color: #28a745; /* Verde para sucesso */
+            --border-color: #dee2e6; /* Bordas cinza claro */
+            --table-header-bg: #1a3e72; /* Cabeçalho tabela */
+            --table-row-even: #f8f9fa; /* Linhas pares tabela */
+            --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+        
+        h2 {
+            font-size: 20px;
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 8px;
+            margin-top: 25px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            box-shadow: 0 2px 6px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--table-header-bg);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: var(--table-row-even);
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background-color: var(--light-color) !important;
+        }
+        .hidden-btn {
+        display: none !important;
+        visibility: hidden !important;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        
+        .btn:hover {
+            background: #e05d00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .btn-download {
+            background: var(--success-color);
+            display: block;
+            width: 220px;
+            margin: 30px auto 0;
+        }
+        
+        .btn-download:hover {
+            background: #218838;
+        }
+
+        .btn-report {
+            background: #17a2b8;
+            display: block;
+            width: 220px;
+            margin: 15px auto 0;
+        }
+        
+        .btn-report:hover {
+            background: #138496;
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+            box-shadow: 0 3px 8px var(--shadow-color);
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .summary-label {
+            font-weight: 600;
+        }
+        
+        .summary-value {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .grand-total {
+            font-size: 20px;
+            color: var(--accent-color);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--light-color);
+        }
+        
+        .toggle-section {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toggle-section::after {
+            content: '+';
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .toggle-section.active::after {
+            content: '-';
+        }
+        
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .company-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .company-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .company-info {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .document-number {
+            text-align: right;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        
+        .document-number input {
+            display: inline-block;
+            width: 60px;
+            margin-left: 5px;
+            padding: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+        }
+        
+        .payment-method {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .payment-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .payment-option label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .advance-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .advance-option input {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .advance-option label {
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 14px;
+        }
+        
+        .advance-section {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* Footer styles */
+        .footer {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        @media print {
+            .footer {
+                font-size: 8px;
+                position: fixed;
+                bottom: 5mm;
+                right: 5mm;
+            }
+        }
+        
+        /* Estilos para impressão */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+                font-size: 9px !important;
+                line-height: 1.1 !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 5mm !important;
+                max-width: 100%;
+                margin: 0 !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .section-content {
+                display: block !important;
+            }
+            
+            .toggle-section::after {
+                display: none;
+            }
+            
+            /* Garante que as cores sejam impressas */
+            th {
+                background-color: var(--table-header-bg) !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-size: 8px !important;
+                padding: 4px 6px !important;
+            }
+            
+            td {
+                font-size: 8px !important;
+                padding: 4px 6px !important;
+            }
+            
+            /* Evita quebras em elementos importantes */
+            .form-group, table, .summary-card {
+                page-break-inside: avoid;
+                margin-bottom: 5mm !important;
+            }
+            
+            /* Melhora a legibilidade na impressão */
+            h1, h2, h3, h4 {
+                color: var(--primary-color) !important;
+                margin-bottom: 3mm !important;
+            }
+            
+            h1 {
+                font-size: 12px !important;
+                padding-bottom: 2mm !important;
+                margin-bottom: 3mm !important;
+            }
+            
+            h2 {
+                font-size: 10px !important;
+                margin-top: 3mm !important;
+            }
+            
+            h3 {
+                font-size: 9px !important;
+                margin-top: 3mm !important;
+            }
+            
+            .company-header {
+                margin-bottom: 3mm !important;
+            }
+            
+            .company-name {
+                font-size: 11px !important;
+            }
+            
+            .company-info {
+                font-size: 8px !important;
+            }
+            
+            .document-number {
+                font-size: 8px !important;
+                margin-bottom: 3mm !important;
+            }
+            
+            .form-group {
+                margin-bottom: 3mm !important;
+            }
+            
+            .row {
+                margin: 0 -2mm !important;
+            }
+            
+            .col {
+                padding: 0 2mm !important;
+                margin-bottom: 2mm !important;
+            }
+            
+            .summary-card {
+                padding: 3mm !important;
+                margin-top: 3mm !important;
+            }
+            
+            .summary-item {
+                margin-bottom: 1mm !important;
+                padding-bottom: 1mm !important;
+            }
+            
+            .grand-total {
+                font-size: 10px !important;
+                margin-top: 2mm !important;
+                padding-top: 2mm !important;
+            }
+            
+            .static-value {
+                padding: 1mm !important;
+                margin-bottom: 1mm !important;
+                font-size: 8px !important;
+            }
+            
+            .field-group {
+                margin-bottom: 1mm !important;
+            }
+            
+            .field-label, .field-value {
+                font-size: 8px !important;
+                margin-bottom: 1mm !important;
+                padding: 1mm !important;
+            }
+            
+            .payment-method, .advance-section {
+                padding: 2mm !important;
+                margin-top: 2mm !important;
+            }
+            
+            .container::before {
+                height: 1mm !important;
+            }
+            
+            h1::after {
+                height: 0.5mm !important;
+                width: 20mm !important;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        .modal-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btn-print {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-btn-close {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* PDF-specific styles */
+        .pdf-field-group {
+            display: flex;
+            margin-bottom: 2mm;
+        }
+
+        .pdf-field-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 40%;
+            font-size: 7px;
+        }
+
+        .pdf-field-value {
+            font-size: 7px;
+            border-bottom: 1px solid #eee;
+            flex: 1;
+            padding-bottom: 1mm;
+        }
+
+        .pdf-table {
+            font-size: 7px !important;
+        }
+
+        .pdf-table th, 
+        .pdf-table td {
+            padding: 2px 4px !important;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container" id="pdf-content">
+        <div class="company-header">
+            <div class="company-name">Ingressos Web LTDA</div>
+            <div class="company-info">CNPJ: 58.922.856/0001-02</div>
+            <div class="company-info">Rua Euclides da Cunha, 443, Jardim Shangri-La A, Londrina – PR</div>
+        </div>
+        
+        <div class="document-number">
+            <div id="generatedTimestamp"></div>
+            <div>SR Nº <input type="text" id="documentNumberInput" value="001"></div>
+        </div>
+        
+        <h1>Solicitação de Recursos</h1>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Dados do Evento</h2>
+            <div class="section-content" id="eventDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="eventName">Evento - Centro de custo:</label>
+                        <input type="text" id="eventName" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="eventLocation">Local do evento:</label>
+                        <input type="text" id="eventLocation" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="eventStartDate">Data Início do Evento:</label>
+                        <input type="date" id="eventStartDate" value="">
+                    </div>
+                    <div class="col">
+                        <label for="eventEndDate">Data Fim do Evento:</label>
+                        <input type="date" id="eventEndDate" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Dados do Funcionário</h2>
+            <div class="section-content" id="employeeDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="employeeSelect">Selecione o Funcionário:</label>
+                        <select id="employeeSelect" class="employee-select">
+                            <option value="">-- Selecione --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="employeeName">Nome:</label>
+                        <input type="text" id="employeeName">
+                    </div>
+                    <div class="col">
+                        <label for="pixKey">Chave Pix:</label>
+                        <input type="text" id="pixKey">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="phone">Telefone:</label>
+                        <input type="text" id="phone">
+                    </div>
+                    <div class="col">
+                        <label for="rg">RG:</label>
+                        <input type="text" id="rg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf">
+                    </div>
+                    <div class="col">
+                        <label for="birthDate">Data de Nascimento:</label>
+                        <input type="date" id="birthDate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="motherName">Nome da Mãe:</label>
+                        <input type="text" id="motherName">
+                    </div>
+                    <div class="col">
+                        <label for="address">Endereço:</label>
+                        <input type="text" id="address">
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <h4>Forma de Pagamento:</h4>
+                    <div class="payment-option">
+                        <input type="radio" id="paymentAccount" name="paymentMethod" value="account" checked>
+                        <label for="paymentAccount">Adiantamento em Conta</label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="paymentAlelo" name="paymentMethod" value="alelo">
+                        <label for="paymentAlelo">Cartão Alelo Despesas</label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="paymentOther" name="paymentMethod" value="other">
+                        <label for="paymentOther">Outra Forma</label>
+                    </div>
+                </div>
+                
+                <div class="advance-section">
+                    <h4>Itens para Adiantamento:</h4>
+                    <div class="advance-option">
+                        <input type="checkbox" id="advanceDaily" class="advance-checkbox">
+                        <label for="advanceDaily">Adiantar Diárias</label>
+                    </div>
+                    <div class="advance-option">
+                        <input type="checkbox" id="advanceFood" class="advance-checkbox" checked>
+                        <label for="advanceFood">Adiantar Alimentação</label>
+                    </div>
+                    <div class="advance-option">
+                        <input type="checkbox" id="advanceTransport" class="advance-checkbox" checked>
+                        <label for="advanceTransport">Adiantar Deslocamento (somente combustível e Uber)</label>
+                    </div>
+                    <div class="advance-option">
+                        <input type="checkbox" id="advanceHotel" class="advance-checkbox">
+                        <label for="advanceHotel">Adiantar Hospedagem</label>
+                    </div>
+                    <div class="advance-option">
+                        <input type="checkbox" id="advanceEmergency" class="advance-checkbox">
+                        <label for="advanceEmergency">Adiantar Fundo de Emergência</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <label for="advancePayment">Valor Adiantamento em Conta:</label>
+                        <input type="number" id="advancePayment" value="670.00" step="0.01">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Dados da Viagem</h2>
+            <div class="section-content" id="travelDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="departureDate">Data da Ida:</label>
+                        <input type="date" id="departureDate" value="">
+                    </div>
+                    <div class="col">
+                        <label for="returnDate">Data Retorno:</label>
+                        <input type="date" id="returnDate" value="">
+                    </div>
+                </div>
+                
+                <h3>Diárias</h3>
+                <table id="dailyAllowanceTable">
+                    <thead>
+                        <tr>
+                            <th>Quantidade de Diárias Evento</th>
+                            <th>Valor Unit Diária</th>
+                            <th>Valor total de Diárias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="number" id="dailyQty" value="" min="0"></td>
+                            <td><input type="number" id="dailyUnitValue" value="250.00" step="0.01" min="0"></td>
+                            <td class="total-row" id="dailyTotalValue">R$ 250,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Alimentação</h3>
+                <table id="foodAllowanceTable">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alimentação Meio Período (40)</td>
+                            <td><input type="number" id="halfDayMealsQty" value="" min="0"></td>
+                            <td><input type="number" id="halfDayMealsUnitValue" value="40.00" step="0.01" min="0"></td>
+                            <td class="total-row" id="halfDayMealsTotalValue">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Alimentação Período Inteiro (80)</td>
+                            <td><input type="number" id="fullDayMealsQty" value="" min="0"></td>
+                            <td><input type="number" id="fullDayMealsUnitValue" value="80.00" step="0.01" min="0"></td>
+                            <td class="total-row" id="fullDayMealsTotalValue">R$ 160,00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3">VALOR ALIMENTAÇÃO + DIÁRIAS:</td>
+                            <td id="totalFoodAndDailyValue">R$ 410,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Deslocamento</h2>
+            <div class="section-content" id="transportDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="transportType">Meio de Deslocamento:</label>
+                        <select id="transportType">
+                            <option value=""></option>
+                            <option value="car">Carro</option>
+                            <option value="plane">Avião</option>
+                            <option value="bus">Ônibus</option>
+                            <option value="train">Trem</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="rentedCar">Carro Alugado?</label>
+                        <select id="rentedCar">
+                            <option value=""></option>
+                            <option value="yes">Sim</option>
+                            <option value="no">Não</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="carDetails">
+                    <div class="row">
+                        <div class="col">
+                            <label for="carPickupDate">Pega o carro dia:</label>
+                            <input type="date" id="carPickupDate" value="">
+                        </div>
+                        <div class="col">
+                            <label for="carReturnDate">Devolve o carro dia:</label>
+                            <input type="date" id="carReturnDate" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="carRentalDays">Quantidade de Diárias:</label>
+                            <input type="number" id="carRentalDays" value="" min="0">
+                        </div>
+                        <div class="col">
+                            <label for="carRentalValue">Valor do Aluguel:</label>
+                            <input type="number" id="carRentalValue" value="" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="carConsumption">Consumo do veículo (km/l):</label>
+                            <input type="number" id="carConsumption" value="" step="0.1" min="0">
+                        </div>
+                        <div class="col">
+                            <label for="fuelType">Tipo de Combustível:</label>
+                            <select id="fuelType">
+                                <option value=""></option>
+                                <option value="alcohol">Álcool</option>
+                                <option value="gasoline">Gasolina</option>
+                                <option value="diesel">Diesel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="distanceKm">Quantidade de Km Rodado:</label>
+                            <input type="number" id="distanceKm" value="" min="0">
+                        </div>
+                        <div class="col">
+                            <label for="fuelPrice">Valor por Litro:</label>
+                            <input type="number" id="fuelPrice" value="" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="fuelLiters">Quantidade de Litros:</label>
+                            <input type="number" id="fuelLiters" value="" step="0.01" min="0" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="totalFuelCost">Valor Total de Combustível:</label>
+                            <input type="number" id="totalFuelCost" value="" step="0.01" min="0" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="tollQty">Quantidade de pedágios:</label>
+                            <input type="number" id="tollQty" value="" min="0">
+                        </div>
+                        <div class="col">
+                            <label for="totalTollCost">Valor Total de Pedágios:</label>
+                            <input type="number" id="totalTollCost" value="" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="uberUsed">Gastos com Uber:</label>
+                            <select id="uberUsed">
+                                <option value=""></option>
+                                <option value="yes">Sim</option>
+                                <option value="no">Não</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="totalUberCost">Valor Total de Uber:</label>
+                            <input type="number" id="totalUberCost" value="" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="totalTransportCost">VALOR TOTAL DE DESLOCAMENTO:</label>
+                            <input type="number" id="totalTransportCost" value="" step="0.01" min="0" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Hospedagem</h2>
+            <div class="section-content" id="accommodationDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="hotelName">Nome do Hotel / Airbnb:</label>
+                        <input type="text" id="hotelName" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="hotelAddress">Endereço do Hotel / Airbnb:</label>
+                        <input type="text" id="hotelAddress">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="hotelCheckin">Data de Entrada:</label>
+                        <input type="date" id="hotelCheckin">
+                    </div>
+                    <div class="col">
+                        <label for="hotelCheckout">Data de Saída:</label>
+                        <input type="date" id="hotelCheckout">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="hotelNights">Quantidade de Diárias:</label>
+                        <input type="number" id="hotelNights" value="" min="0">
+                    </div>
+                    <div class="col">
+                        <label for="hotelDailyRate">Valor da Diária:</label>
+                        <input type="number" id="hotelDailyRate" value="" step="0.01" min="0">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="totalHotelCost">VALOR TOTAL HOTEL / AIRBNB</label>
+                        <input type="number" id="totalHotelCost" value="" step="0.01" min="0" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h2 class="toggle-section">Outros</h2>
+            <div class="section-content" id="otherDataSection">
+                <div class="row">
+                    <div class="col">
+                        <label for="emergencyFund">VALOR DE EMERGÊNCIA</label>
+                        <input type="number" id="emergencyFund" value="" step="0.01" min="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="summary-card">
+            <h3>Resumo da Solicitação</h3>
+            <div class="summary-item">
+                <span class="summary-label">Diárias:</span>
+                <span class="summary-value" id="summaryDaily"></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Alimentação:</span>
+                <span class="summary-value" id="summaryFood"></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Deslocamento:</span>
+                <span class="summary-value" id="summaryTransport"></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Hospedagem:</span>
+                <span class="summary-value" id="summaryHotel"></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Fundo de Emergência:</span>
+                <span class="summary-value" id="summaryEmergency"></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Adiantamento em Conta:</span>
+                <span class="summary-value" id="summaryAdvancePayment"></span>
+            </div>
+            <div class="summary-item grand-total">
+                <span class="summary-label">VALOR TOTAL DA SOLICITAÇÃO:</span>
+                <span class="summary-value" id="grandTotal"></span>
+            </div>
+        </div>
+        
+        <button class="btn btn-download no-print hidden-btn" id="downloadBtn">Baixar Solicitação (PDF)</button>
+        <button class="btn btn-report no-print" id="reportBtn">Visualizar Relatório</button>
+        
+        <!-- Footer adicionado aqui -->
+        <div class="footer no-print" id="footer"></div>
+    </div>
+
+    <!-- Modal for report -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="reportContent"></div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-print" id="printReportBtn">Imprimir Relatório</button>
+                <button class="modal-btn modal-btn-close">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database of employees from the Excel sheet
+        const employees = [
+            {
+                name: "Aglaessio da Silva Martins Reis",
+                pixKey: "aglaessio@gmail.com",
+                phone: "(41) 9 8827-2932",
+                rg: "10.315.431-6",
+                cpf: "001.142.142-80",
+                birthDate: "1990-10-28",
+                motherName: "Franci Mary Soares da Silva Reis",
+                address: "Rua Ayrton Turra, 153, Cajuru, Curitiba - PR"
+            },
+            {
+                name: "Lucas Guilherme Carnaiba Pinzan",
+                pixKey: "53972574000198",
+                phone: "(41) 9 9892-4862",
+                rg: "13.236.243-2",
+                cpf: "079.383.209-86",
+                birthDate: "1996-01-28",
+                motherName: "Ivanir Viola Carnaiba",
+                address: "Rua Luiz França, 3174, Cajuru, Curitiba - PR"
+            },
+            {
+                name: "Adriano de Azevedo de Araújo Prado",
+                pixKey: "41988215811",
+                phone: "(41) 9 8821-5811",
+                rg: "14.451.632-0",
+                cpf: "128.723.249-33",
+                birthDate: "2001-08-02",
+                motherName: "Mirian de Azevedo",
+                address: "Rua Miguel Caluf, 1340, Cajuru, Curitiba - PR"
+            },
+            {
+                name: "Lucas Malta Barbosa Cesário",
+                pixKey: "40559523840",
+                phone: "(43) 9 9145-6966",
+                rg: "12.916.508-1",
+                cpf: "405.595.238-40",
+                birthDate: "2000-08-02",
+                motherName: "Sandra Malta Barbosa",
+                address: "Rua Alfredo Battini, 130, San Remo, Londrina - PR"
+            },
+            {
+                name: "Márcio Golchinski",
+                pixKey: "41996979388",
+                phone: "(42) 9 9842-7375",
+                rg: "91987357",
+                cpf: "055.373.949-28",
+                birthDate: "1985-04-06",
+                motherName: "Rosa de Souza Golchinski",
+                address: "Rua dos Golfinhos, 2, São Marcos, São José dos Pinhais - PR"
+            },
+            {
+                name: "Lívia Marieta Caldeira Mota",
+                pixKey: "49015369828",
+                phone: "(14) 9 9893-5903",
+                rg: "56.461.133-5",
+                cpf: "490.153.698-28",
+                birthDate: "2000-08-08",
+                motherName: "Vânia Cristina Caldeira",
+                address: "Rua Akeo Hasuda, 165, Cidade Industrial 2, Londrina - PR"
+            },
+            {
+                name: "Gabriel Tedesco Pastori",
+                pixKey: "14997825682",
+                phone: "(14) 9 9782-5682",
+                rg: "55.709.051-9",
+                cpf: "377.455.008-50",
+                birthDate: "2001-02-14",
+                motherName: "Maude Tedesco Pastori",
+                address: "Av. Jockei Club, 448 - Joquei club, Londrina - PR"
+            },
+            {
+                name: "Rodolpho Carvalho Lourenço",
+                pixKey: "21968015032",
+                phone: "(21) 9 6801-5032",
+                rg: "24.043.083-5",
+                cpf: "147.378.917-62",
+                birthDate: "1988-11-16",
+                motherName: "Renilda Carvalho Lourenço",
+                address: "Rua Rufino Adam Saens, 3 - Viçoso Jardim, Niterói - RJ"
+            },
+            {
+                name: "Hemanuel B. de Sena",
+                pixKey: "41987101049",
+                phone: "(41) 9 8710-1049",
+                rg: "12.911.221-4",
+                cpf: "487.618.799-30",
+                birthDate: "1993-07-21",
+                motherName: "Ozineya Sena",
+                address: "Rua Albino Kutzek, 55 - Alto Boqueirão, Curitiba - PR"
+            },
+            {
+                name: "Denis Mattos de Carvalho",
+                pixKey: "41998414400",
+                phone: "(41) 9 8533-4400",
+                rg: "69.23748-7",
+                cpf: "034.888.039-19",
+                birthDate: "1982-12-19",
+                motherName: "Edna Pereira",
+                address: "Rua Terezina, 403 – Cajuru, Curitiba - PR"
+            },
+            {
+                name: "Mauro de Souza Golchinski",
+                pixKey: "41988187203",
+                phone: "(41) 9 8818-7203",
+                rg: "13.271.735-4",
+                cpf: "097.238.749-89",
+                birthDate: "1999-01-25",
+                motherName: "Rosa de Souza Golchinski",
+                address: "Rua Leonora Armstrong, 55 – Champagnat, Londrina - PR"
+            },
+            {
+                name: "Aryadne Sagioratto Leal",
+                pixKey: "09300993976",
+                phone: "(43) 9 9611-2153",
+                rg: "12.946.790-8",
+                cpf: "093.009.939-76",
+                birthDate: "1999-01-11",
+                motherName: "Cristiane Maria Sagioratto",
+                address: "Rua Silvio Bussadori, 438 – Tókio, Londrina - PR"
+            },
+            {
+                name: "Joaquim Jose Barbosa Neto",
+                pixKey: "09934825970",
+                phone: "(43) 9 8825-4774",
+                rg: "14.654.413-4",
+                cpf: "099.348.259-70",
+                birthDate: "2002-03-11",
+                motherName: "Patricia Garcia Arce",
+                address: "Rua Desembargador Motta, 1304 - Água Verde, Curitiba - PR"
+            },
+            {
+                name: "Yuri Murakami da Silva",
+                pixKey: "44999319397",
+                phone: "(43) 9 9181-8998",
+                rg: "83.48474-8",
+                cpf: "084.698.649-39",
+                birthDate: "1995-10-17",
+                motherName: "Adriana Emiko Murakami",
+                address: "Rua Frederico Virmond, 462, Jardim Santos Dumont, Paranavaí - PR"
+            },
+            {
+                name: "Chayene de Souza Neiva",
+                pixKey: "44998039947",
+                phone: "(44) 9 9803-9947",
+                rg: "98.95192-0",
+                cpf: "055.689.929-92",
+                birthDate: "1995-11-02",
+                motherName: "Edna de Souza Coelho Neiva",
+                address: "Rua Iracema, 439 - Jardim Santos Dumont, Paranavaí - PR"
+            },
+            {
+                name: "Juliana Del Carmen Becerra Soto Waldow",
+                pixKey: "10293940916",
+                phone: "(41) 9 9702-7532",
+                rg: "99.34075-4",
+                cpf: "102.939.409-16",
+                birthDate: "2001-10-30",
+                motherName: "Carolina Del Carmen Becerra Soto",
+                address: "Rua Cap. Borges do Canto, 56 – Cajuru, Curitiba - PR"
+            },
+            {
+                name: "Eduardo Henrique Covatti Zambon",
+                pixKey: "",
+                phone: "(49) 9 9128-0062",
+                rg: "55.1978-3",
+                cpf: "076.657.299-40",
+                birthDate: "1998-03-04",
+                motherName: "Francieli Salete Covatti",
+                address: ""
+            },
+            {
+                name: "Thamires dos Santos Lara",
+                pixKey: "",
+                phone: "(49) 9 9910-7462",
+                rg: "52.4877-0",
+                cpf: "091.871.819-83",
+                birthDate: "1992-10-03",
+                motherName: "Marelise dos Santos Lara",
+                address: ""
+            }
+        ];
+
+        // Format currency
+        function formatCurrency(value) {
+            return 'R$ ' + value.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+        }
+        
+        // Parse currency
+        function parseCurrency(value) {
+            return parseFloat(value.replace('R$', '').replace('.', '').replace(',', '.'));
+        }
+        
+        // Populate employee dropdown
+        function populateEmployeeDropdown() {
+            const select = document.getElementById('employeeSelect');
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.name;
+                option.textContent = employee.name;
+                select.appendChild(option);
+            });
+        }
+        
+        // Auto-fill employee data
+        function fillEmployeeData(employeeName) {
+            const employee = employees.find(emp => emp.name === employeeName);
+            if (employee) {
+                document.getElementById('employeeName').value = employee.name;
+                document.getElementById('pixKey').value = employee.pixKey;
+                document.getElementById('phone').value = employee.phone;
+                document.getElementById('rg').value = employee.rg;
+                document.getElementById('cpf').value = employee.cpf;
+                document.getElementById('birthDate').value = employee.birthDate;
+                document.getElementById('motherName').value = employee.motherName;
+                document.getElementById('address').value = employee.address;
+            }
+        }
+        
+        // Update payment fields based on selection
+        function updatePaymentFields() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const advancePaymentField = document.getElementById('advancePayment');
+            
+            if (paymentMethod === 'account') {
+                advancePaymentField.disabled = false;
+                advancePaymentField.closest('.row').style.display = 'flex';
+                document.querySelector('.advance-section').style.display = 'block';
+            } else {
+                advancePaymentField.disabled = true;
+                advancePaymentField.closest('.row').style.display = 'none';
+                document.querySelector('.advance-section').style.display = 'none';
+            }
+        }
+        
+        // Calculate advance payment based on selected items
+        function calculateAdvancePayment() {
+            let advanceTotal = 0;
+            
+            // Daily allowance
+            if (document.getElementById('advanceDaily').checked) {
+                const dailyQty = parseInt(document.getElementById('dailyQty').value) || 0;
+                const dailyUnitValue = parseFloat(document.getElementById('dailyUnitValue').value) || 0;
+                advanceTotal += dailyQty * dailyUnitValue;
+            }
+            
+            // Food allowance
+            if (document.getElementById('advanceFood').checked) {
+                const halfDayMealsQty = parseInt(document.getElementById('halfDayMealsQty').value) || 0;
+                const halfDayMealsUnitValue = parseFloat(document.getElementById('halfDayMealsUnitValue').value) || 0;
+                advanceTotal += halfDayMealsQty * halfDayMealsUnitValue;
+                
+                const fullDayMealsQty = parseInt(document.getElementById('fullDayMealsQty').value) || 0;
+                const fullDayMealsUnitValue = parseFloat(document.getElementById('fullDayMealsUnitValue').value) || 0;
+                advanceTotal += fullDayMealsQty * fullDayMealsUnitValue;
+            }
+            
+            // Transport - Only fuel and Uber when advance transport is checked
+            if (document.getElementById('advanceTransport').checked) {
+                const distanceKm = parseFloat(document.getElementById('distanceKm').value) || 0;
+                const carConsumption = parseFloat(document.getElementById('carConsumption').value) || 1;
+                const fuelLiters = distanceKm / carConsumption;
+                const fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 0;
+                const totalFuelCost = fuelLiters * fuelPrice;
+                
+                const totalUberCost = document.getElementById('uberUsed').value === 'yes' ? 
+                    (parseFloat(document.getElementById('totalUberCost').value) || 0) : 0;
+                
+                // Only fuel and Uber are included in advance
+                advanceTotal += totalFuelCost + totalUberCost;
+            }
+            
+            // Hotel
+            if (document.getElementById('advanceHotel').checked) {
+                const hotelNights = parseInt(document.getElementById('hotelNights').value) || 0;
+                const hotelDailyRate = parseFloat(document.getElementById('hotelDailyRate').value) || 0;
+                advanceTotal += hotelNights * hotelDailyRate;
+            }
+            
+            // Emergency fund
+            if (document.getElementById('advanceEmergency').checked) {
+                advanceTotal += parseFloat(document.getElementById('emergencyFund').value) || 0;
+            }
+            
+            // Update advance payment field
+            document.getElementById('advancePayment').value = advanceTotal.toFixed(2);
+            document.getElementById('summaryAdvancePayment').textContent = formatCurrency(advanceTotal);
+        }
+        
+        // Calculate all values
+        function calculateAll() {
+            // Daily allowance
+            const dailyQty = parseInt(document.getElementById('dailyQty').value) || 0;
+            const dailyUnitValue = parseFloat(document.getElementById('dailyUnitValue').value) || 0;
+            const dailyTotalValue = dailyQty * dailyUnitValue;
+            document.getElementById('dailyTotalValue').textContent = formatCurrency(dailyTotalValue);
+            
+            // Food allowance
+            const halfDayMealsQty = parseInt(document.getElementById('halfDayMealsQty').value) || 0;
+            const halfDayMealsUnitValue = parseFloat(document.getElementById('halfDayMealsUnitValue').value) || 0;
+            const halfDayMealsTotalValue = halfDayMealsQty * halfDayMealsUnitValue;
+            document.getElementById('halfDayMealsTotalValue').textContent = formatCurrency(halfDayMealsTotalValue);
+            
+            const fullDayMealsQty = parseInt(document.getElementById('fullDayMealsQty').value) || 0;
+            const fullDayMealsUnitValue = parseFloat(document.getElementById('fullDayMealsUnitValue').value) || 0;
+            const fullDayMealsTotalValue = fullDayMealsQty * fullDayMealsUnitValue;
+            document.getElementById('fullDayMealsTotalValue').textContent = formatCurrency(fullDayMealsTotalValue);
+            
+            const totalFoodAndDailyValue = dailyTotalValue + halfDayMealsTotalValue + fullDayMealsTotalValue;
+            document.getElementById('totalFoodAndDailyValue').textContent = formatCurrency(totalFoodAndDailyValue);
+            
+            // Transport
+            const distanceKm = parseFloat(document.getElementById('distanceKm').value) || 0;
+            const carConsumption = parseFloat(document.getElementById('carConsumption').value) || 1;
+            const fuelLiters = distanceKm / carConsumption;
+            document.getElementById('fuelLiters').value = fuelLiters.toFixed(2);
+            
+            const fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 0;
+            const totalFuelCost = fuelLiters * fuelPrice;
+            document.getElementById('totalFuelCost').value = totalFuelCost.toFixed(2);
+            
+            const carRentalValue = parseFloat(document.getElementById('carRentalValue').value) || 0;
+            const totalTollCost = parseFloat(document.getElementById('totalTollCost').value) || 0;
+            const totalUberCost = document.getElementById('uberUsed').value === 'yes' ? 
+                (parseFloat(document.getElementById('totalUberCost').value) || 0) : 0;
+            
+            const totalTransportCost = totalFuelCost + carRentalValue + totalTollCost + totalUberCost;
+            document.getElementById('totalTransportCost').value = totalTransportCost.toFixed(2);
+            
+            // Hotel
+            const hotelNights = parseInt(document.getElementById('hotelNights').value) || 0;
+            const hotelDailyRate = parseFloat(document.getElementById('hotelDailyRate').value) || 0;
+            const totalHotelCost = hotelNights * hotelDailyRate;
+            document.getElementById('totalHotelCost').value = totalHotelCost.toFixed(2);
+            
+            // Emergency fund
+            const emergencyFund = parseFloat(document.getElementById('emergencyFund').value) || 0;
+            
+            // Calculate advance payment
+            calculateAdvancePayment();
+            
+            // Grand total
+            const grandTotal = totalFoodAndDailyValue + totalTransportCost + totalHotelCost + emergencyFund;
+            
+            // Update summary
+            document.getElementById('summaryDaily').textContent = formatCurrency(dailyTotalValue);
+            document.getElementById('summaryFood').textContent = formatCurrency(halfDayMealsTotalValue + fullDayMealsTotalValue);
+            document.getElementById('summaryTransport').textContent = formatCurrency(totalTransportCost);
+            document.getElementById('summaryHotel').textContent = formatCurrency(totalHotelCost);
+            document.getElementById('summaryEmergency').textContent = formatCurrency(emergencyFund);
+            document.getElementById('grandTotal').textContent = formatCurrency(grandTotal);
+        }
+        
+        // Set current timestamp in the document header
+        function setCurrentTimestamp() {
+            const now = new Date();
+            const options = { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('generatedTimestamp').textContent = `Gerado em: ${now.toLocaleDateString('pt-BR', options)}`;
+        }
+        
+        // Toggle sections
+        function setupSectionToggles() {
+            const toggleSections = document.querySelectorAll('.toggle-section');
+            
+            toggleSections.forEach(section => {
+                section.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                });
+            });
+        }
+        
+        // Format date for display
+        function formatDateForDisplay(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+        
+        // Get payment method text
+        function getPaymentMethodText(value) {
+            switch(value) {
+                case 'account': return 'Adiantamento em Conta';
+                case 'alelo': return 'Cartão Alelo Despesas';
+                case 'other': return 'Outra Forma';
+                default: return value;
+            }
+        }
+        
+        // Get transport type text
+        function getTransportTypeText(value) {
+            switch(value) {
+                case 'car': return 'Carro';
+                case 'plane': return 'Avião';
+                case 'bus': return 'Ônibus';
+                case 'train': return 'Trem';
+                default: return value;
+            }
+        }
+        
+        // Get fuel type text
+        function getFuelTypeText(value) {
+            switch(value) {
+                case 'alcohol': return 'Álcool';
+                case 'gasoline': return 'Gasolina';
+                case 'diesel': return 'Diesel';
+                default: return value;
+            }
+        }
+        
+        // Generate PDF with improved layout
+        function generatePDF() {
+            // Create a clone of the content to modify for PDF
+            const element = document.getElementById('pdf-content');
+            const clone = element.cloneNode(true);
+            
+            // First, ensure all sections are expanded in the clone
+            clone.querySelectorAll('.toggle-section').forEach(section => {
+                section.classList.add('active');
+                const content = section.nextElementSibling;
+                content.classList.add('active');
+                content.style.display = 'block';
+                
+                // Remove the toggle indicator
+                section.style.cursor = 'default';
+                section.style.setProperty('--after-content', 'none');
+            });
+            
+            // Replace all form groups with field-group divs
+            clone.querySelectorAll('.form-group').forEach(formGroup => {
+                const sectionContent = formGroup.querySelector('.section-content');
+                if (!sectionContent) return;
+                
+                // Create a container for all field groups in this section
+                const fieldsContainer = document.createElement('div');
+                fieldsContainer.style.display = 'flex';
+                fieldsContainer.style.flexDirection = 'column';
+                fieldsContainer.style.gap = '2mm';
+                
+                // Process all rows and their columns
+                sectionContent.querySelectorAll('.row').forEach(row => {
+                    row.querySelectorAll('.col').forEach(col => {
+                        const label = col.querySelector('label');
+                        const input = col.querySelector('input, select');
+                        
+                        if (label && input) {
+                            const fieldGroup = document.createElement('div');
+                            fieldGroup.className = 'pdf-field-group';
+                            
+                            const fieldLabel = document.createElement('div');
+                            fieldLabel.className = 'pdf-field-label';
+                            fieldLabel.textContent = label.textContent.replace(':', '') + ':';
+                            
+                            const fieldValue = document.createElement('div');
+                            fieldValue.className = 'pdf-field-value';
+                            
+                            if (input.type === 'date') {
+                                fieldValue.textContent = input.value ? formatDateForDisplay(input.value) : '-';
+                            } else if (input.type === 'checkbox' || input.type === 'radio') {
+                                fieldValue.textContent = input.checked ? 'Sim' : 'Não';
+                            } else if (input.tagName === 'SELECT') {
+                                const selectedOption = input.options[input.selectedIndex];
+                                let value = selectedOption ? selectedOption.text : '';
+                                
+                                if (input.id === 'transportType') {
+                                    value = getTransportTypeText(selectedOption.value);
+                                } else if (input.id === 'fuelType') {
+                                    value = getFuelTypeText(selectedOption.value);
+                                } else if (input.id === 'uberUsed' || input.id === 'rentedCar') {
+                                    value = selectedOption.value === 'yes' ? 'Sim' : 'Não';
+                                }
+                                
+                                fieldValue.textContent = value;
+                            } else {
+                                fieldValue.textContent = input.value || '-';
+                            }
+                            
+                            fieldGroup.appendChild(fieldLabel);
+                            fieldGroup.appendChild(fieldValue);
+                            fieldsContainer.appendChild(fieldGroup);
+                        }
+                    });
+                });
+                
+                // Replace the section content with our new fields container
+                sectionContent.innerHTML = '';
+                sectionContent.appendChild(fieldsContainer);
+            });
+            
+            // Process special sections (payment method and advance items)
+            const paymentMethod = clone.querySelector('input[name="paymentMethod"]:checked');
+            if (paymentMethod) {
+                const paymentContainer = clone.querySelector('.payment-method');
+                if (paymentContainer) {
+                    paymentContainer.innerHTML = '';
+                    
+                    const paymentTitle = document.createElement('h4');
+                    paymentTitle.textContent = 'Forma de Pagamento:';
+                    paymentTitle.style.fontSize = '8px';
+                    paymentContainer.appendChild(paymentTitle);
+                    
+                    const fieldGroup = document.createElement('div');
+                    fieldGroup.className = 'pdf-field-group';
+                    
+                    const fieldLabel = document.createElement('div');
+                    fieldLabel.className = 'pdf-field-label';
+                    fieldLabel.textContent = 'Método selecionado:';
+                    
+                    const fieldValue = document.createElement('div');
+                    fieldValue.className = 'pdf-field-value';
+                    fieldValue.textContent = getPaymentMethodText(paymentMethod.value);
+                    
+                    fieldGroup.appendChild(fieldLabel);
+                    fieldGroup.appendChild(fieldValue);
+                    paymentContainer.appendChild(fieldGroup);
+                }
+            }
+            
+            // Process advance items
+            const advanceItems = [];
+            clone.querySelectorAll('.advance-option').forEach(option => {
+                const checkbox = option.querySelector('input');
+                if (checkbox) {
+                    advanceItems.push({
+                        name: option.querySelector('label').textContent,
+                        checked: checkbox.checked
+                    });
+                }
+            });
+            
+            if (advanceItems.length > 0) {
+                const advanceContainer = clone.querySelector('.advance-section');
+                if (advanceContainer) {
+                    advanceContainer.innerHTML = '';
+                    
+                    const advanceTitle = document.createElement('h4');
+                    advanceTitle.textContent = 'Itens para Adiantamento:';
+                    advanceTitle.style.fontSize = '8px';
+                    advanceContainer.appendChild(advanceTitle);
+                    
+                    advanceItems.forEach(item => {
+                        const fieldGroup = document.createElement('div');
+                        fieldGroup.className = 'pdf-field-group';
+                        
+                        const fieldLabel = document.createElement('div');
+                        fieldLabel.className = 'pdf-field-label';
+                        fieldLabel.textContent = item.name + ':';
+                        
+                        const fieldValue = document.createElement('div');
+                        fieldValue.className = 'pdf-field-value';
+                        fieldValue.textContent = item.checked ? 'Sim' : 'Não';
+                        
+                        fieldGroup.appendChild(fieldLabel);
+                        fieldGroup.appendChild(fieldValue);
+                        advanceContainer.appendChild(fieldGroup);
+                    });
+                }
+            }
+            
+            // Process tables (make them more compact)
+            clone.querySelectorAll('table').forEach(table => {
+                table.classList.add('pdf-table');
+            });
+            
+            // Remove the download button
+            const downloadBtn = clone.querySelector('#downloadBtn');
+            if (downloadBtn) downloadBtn.remove();
+            const reportBtn = clone.querySelector('#reportBtn');
+            if (reportBtn) reportBtn.remove();
+            
+            // Add PDF-specific styling
+            const style = document.createElement('style');
+            style.textContent = `
+                body {
+                    padding: 0;
+                    background: white;
+                    font-size: 7px !important;
+                    line-height: 1.1 !important;
+                }
+                
+                .container {
+                    box-shadow: none;
+                    padding: 5mm !important;
+                    max-width: 100%;
+                    margin: 0 !important;
+                }
+                
+                .section-content {
+                    display: block !important;
+                }
+                
+                .toggle-section::after {
+                    display: none;
+                }
+                
+                /* Ensure colors are printed */
+                th {
+                    background-color: var(--table-header-bg) !important;
+                    color: white !important;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                    font-size: 7px !important;
+                    padding: 2px 4px !important;
+                }
+                
+                td {
+                    font-size: 7px !important;
+                    padding: 2px 4px !important;
+                }
+                
+                /* Avoid breaks in important elements */
+                .form-group, table, .summary-card {
+                    page-break-inside: avoid;
+                    margin-bottom: 3mm !important;
+                }
+                
+                /* Improve print readability */
+                h1, h2, h3, h4 {
+                    color: var(--primary-color) !important;
+                    margin-bottom: 2mm !important;
+                }
+                
+                h1 {
+                    font-size: 10px !important;
+                    padding-bottom: 1mm !important;
+                    margin-bottom: 2mm !important;
+                }
+                
+                h2 {
+                    font-size: 9px !important;
+                    margin-top: 2mm !important;
+                }
+                
+                h3 {
+                    font-size: 8px !important;
+                    margin-top: 2mm !important;
+                }
+                
+                .company-header {
+                    margin-bottom: 2mm !important;
+                }
+                
+                .company-name {
+                    font-size: 9px !important;
+                }
+                
+                .company-info {
+                    font-size: 7px !important;
+                }
+                
+                .document-number {
+                    font-size: 7px !important;
+                    margin-bottom: 2mm !important;
+                }
+                
+                .form-group {
+                    margin-bottom: 2mm !important;
+                }
+                
+                .row {
+                    margin: 0 -1mm !important;
+                }
+                
+                .col {
+                    padding: 0 1mm !important;
+                    margin-bottom: 1mm !important;
+                }
+                
+                .summary-card {
+                    padding: 2mm !important;
+                    margin-top: 2mm !important;
+                }
+                
+                .summary-item {
+                    margin-bottom: 1mm !important;
+                    padding-bottom: 1mm !important;
+                    font-size: 7px !important;
+                }
+                
+                .grand-total {
+                    font-size: 8px !important;
+                    margin-top: 1mm !important;
+                    padding-top: 1mm !important;
+                }
+                
+                .payment-method, .advance-section {
+                    padding: 1mm !important;
+                    margin-top: 1mm !important;
+                }
+                
+                .container::before {
+                    height: 0.5mm !important;
+                }
+                
+                h1::after {
+                    height: 0.3mm !important;
+                    width: 15mm !important;
+                }
+                
+                /* New field-group styles */
+                .pdf-field-group {
+                    display: flex;
+                    align-items: center;
+                    gap: 2mm;
+                    margin-bottom: 1mm;
+                }
+                
+                .pdf-field-label {
+                    font-weight: 600;
+                    color: var(--primary-color);
+                    font-size: 7px;
+                    min-width: 40%;
+                }
+                
+                .pdf-field-value {
+                    font-size: 7px;
+                    border-bottom: 1px solid #eee;
+                    flex: 1;
+                    padding-bottom: 1mm;
+                }
+                
+                .pdf-table {
+                    font-size: 7px !important;
+                }
+                
+                .pdf-table th, 
+                .pdf-table td {
+                    padding: 2px 4px !important;
+                }
+            `;
+            
+            clone.appendChild(style);
+            
+            // PDF options
+            const opt = {
+                margin: [5, 5, 5, 5],
+                filename: `Solicitacao_Recursos_Viagem_${document.getElementById('documentNumberInput').value}.pdf`,
+                image: { type: 'jpeg', quality: 0.8 },
+                html2canvas: { 
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    letterRendering: true,
+                    backgroundColor: '#FFFFFF'
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    hotfixes: ["px_scaling"] 
+                },
+                pagebreak: { 
+                    mode: ['avoid-all', 'css', 'legacy'],
+                    after: '.page-break' 
+                }
+            };
+            
+            // Generate PDF
+            html2pdf().set(opt).from(clone).save();
+        }
+
+        // Generate report HTML
+        function generateReportHTML() {
+            // Get data from the form
+            const formData = {
+                // Document info
+                documentNumber: document.getElementById('documentNumberInput').value,
+                generatedTimestamp: document.getElementById('generatedTimestamp').textContent,
+                
+                // Event data
+                eventName: document.getElementById('eventName').value,
+                eventLocation: document.getElementById('eventLocation').value,
+                eventStartDate: document.getElementById('eventStartDate').value,
+                eventEndDate: document.getElementById('eventEndDate').value,
+                
+                // Employee data
+                employeeName: document.getElementById('employeeName').value,
+                pixKey: document.getElementById('pixKey').value,
+                phone: document.getElementById('phone').value,
+                rg: document.getElementById('rg').value,
+                cpf: document.getElementById('cpf').value,
+                birthDate: document.getElementById('birthDate').value,
+                motherName: document.getElementById('motherName').value,
+                address: document.getElementById('address').value,
+                
+                // Payment method
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked')?.value || 'account',
+                
+                // Advance items
+                advanceDaily: document.getElementById('advanceDaily').checked,
+                advanceFood: document.getElementById('advanceFood').checked,
+                advanceTransport: document.getElementById('advanceTransport').checked,
+                advanceHotel: document.getElementById('advanceHotel').checked,
+                advanceEmergency: document.getElementById('advanceEmergency').checked,
+                advancePayment: document.getElementById('advancePayment').value,
+                
+                // Travel data
+                departureDate: document.getElementById('departureDate').value,
+                returnDate: document.getElementById('returnDate').value,
+                
+                // Daily allowance
+                dailyQty: document.getElementById('dailyQty').value,
+                dailyUnitValue: document.getElementById('dailyUnitValue').value,
+                dailyTotalValue: document.getElementById('dailyTotalValue').textContent,
+                
+                // Food allowance
+                halfDayMealsQty: document.getElementById('halfDayMealsQty').value,
+                halfDayMealsUnitValue: document.getElementById('halfDayMealsUnitValue').value,
+                halfDayMealsTotalValue: document.getElementById('halfDayMealsTotalValue').textContent,
+                fullDayMealsQty: document.getElementById('fullDayMealsQty').value,
+                fullDayMealsUnitValue: document.getElementById('fullDayMealsUnitValue').value,
+                fullDayMealsTotalValue: document.getElementById('fullDayMealsTotalValue').textContent,
+                totalFoodAndDailyValue: document.getElementById('totalFoodAndDailyValue').textContent,
+                
+                // Transport
+                transportType: document.getElementById('transportType').value,
+                rentedCar: document.getElementById('rentedCar').value,
+                carPickupDate: document.getElementById('carPickupDate').value,
+                carReturnDate: document.getElementById('carReturnDate').value,
+                carRentalDays: document.getElementById('carRentalDays').value,
+                carRentalValue: document.getElementById('carRentalValue').value,
+                carConsumption: document.getElementById('carConsumption').value,
+                fuelType: document.getElementById('fuelType').value,
+                distanceKm: document.getElementById('distanceKm').value,
+                fuelPrice: document.getElementById('fuelPrice').value,
+                fuelLiters: document.getElementById('fuelLiters').value,
+                totalFuelCost: document.getElementById('totalFuelCost').value,
+                tollQty: document.getElementById('tollQty').value,
+                totalTollCost: document.getElementById('totalTollCost').value,
+                uberUsed: document.getElementById('uberUsed').value,
+                totalUberCost: document.getElementById('totalUberCost').value,
+                totalTransportCost: document.getElementById('totalTransportCost').value,
+                
+                // Hotel
+                hotelName: document.getElementById('hotelName').value,
+                hotelAddress: document.getElementById('hotelAddress').value,
+                hotelCheckin: document.getElementById('hotelCheckin').value,
+                hotelCheckout: document.getElementById('hotelCheckout').value,
+                hotelNights: document.getElementById('hotelNights').value,
+                hotelDailyRate: document.getElementById('hotelDailyRate').value,
+                totalHotelCost: document.getElementById('totalHotelCost').value,
+                
+                // Emergency fund
+                emergencyFund: document.getElementById('emergencyFund').value,
+                
+                // Summary
+                summaryDaily: document.getElementById('summaryDaily').textContent,
+                summaryFood: document.getElementById('summaryFood').textContent,
+                summaryTransport: document.getElementById('summaryTransport').textContent,
+                summaryHotel: document.getElementById('summaryHotel').textContent,
+                summaryEmergency: document.getElementById('summaryEmergency').textContent,
+                summaryAdvancePayment: document.getElementById('summaryAdvancePayment').textContent,
+                grandTotal: document.getElementById('grandTotal').textContent
+            };
+
+            // Generate the report HTML
+            const reportHTML = `
+                <!DOCTYPE html>
+                <html lang="pt-BR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Solicitação de Recursos</title>
+                    <style>
+                        :root {
+                            --primary-color: #1a3e72;
+                            --secondary-color: #ff6b00;
+                            --light-color: #f8f9fa;
+                            --dark-color: #212529;
+                            --border-color: #dee2e6;
+                            --table-header-bg: #1a3e72;
+                            --table-row-even: #f8f9fa;
+                        }
+                        
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            line-height: 1.1;
+                            color: var(--dark-color);
+                            padding: 0;
+                            background-color: white;
+                            font-size: 7px;
+                        }
+                        
+                        .report-container {
+                            max-width: 100%;
+                            margin: 0;
+                            background: white;
+                            padding: 5mm;
+                        }
+                        
+                        .company-header {
+                            text-align: center;
+                            margin-bottom: 3mm;
+                        }
+                        
+                        .company-name {
+                            font-size: 9px;
+                            font-weight: 700;
+                            color: var(--primary-color);
+                            margin-bottom: 1mm;
+                        }
+                        
+                        .company-info {
+                            color: #6c757d;
+                            font-size: 7px;
+                            margin-bottom: 1mm;
+                        }
+                        
+                        h1, h2, h3 {
+                            color: var(--primary-color);
+                            margin-bottom: 2mm;
+                        }
+                        
+                        h1 {
+                            font-size: 10px;
+                            text-align: center;
+                            margin-bottom: 2mm;
+                            position: relative;
+                            padding-bottom: 1mm;
+                        }
+                        
+                        h1::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 15mm;
+                            height: 0.3mm;
+                            background: var(--secondary-color);
+                        }
+                        
+                        h2 {
+                            font-size: 9px;
+                            border-bottom: 1px solid var(--light-color);
+                            padding-bottom: 1mm;
+                            margin-top: 2mm;
+                        }
+                        
+                        h3 {
+                            font-size: 8px;
+                            margin-top: 2mm;
+                        }
+                        
+                        .section {
+                            margin-bottom: 3mm;
+                        }
+                        
+                        .field-group {
+                            display: flex;
+                            align-items: center;
+                            gap: 2mm;
+                            margin-bottom: 1mm;
+                        }
+                        
+                        .field-label {
+                            font-weight: 600;
+                            color: var(--primary-color);
+                            min-width: 5%;
+                            font-size: 7px;
+                        }
+                        
+                        .field-value {
+                            font-size: 7px;
+                            flex: 1;
+                        }
+                        
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 2mm 0;
+                            background: white;
+                            border: 1px solid var(--border-color);
+                            font-size: 7px;
+                        }
+                        
+                        th, td {
+                            padding: 2px 4px;
+                            text-align: left;
+                            border: 1px solid var(--border-color);
+                        }
+                        
+                        th {
+                            background-color: var(--table-header-bg);
+                            color: white;
+                            font-weight: 600;
+                        }
+                        
+                        tr:nth-child(even) {
+                            background-color: var(--table-row-even);
+                        }
+                        
+                        .total-row {
+                            font-weight: bold;
+                            background-color: var(--light-color) !important;
+                        }
+                        
+                        .summary-card {
+                            background: white;
+                            border-radius: 2px;
+                            padding: 2mm;
+                            margin-top: 2mm;
+                            border-left: 2px solid var(--secondary-color);
+                        }
+                        
+                        .summary-item {
+                            display: flex;
+                            justify-content: space-between;
+                            border-bottom: 1px dashed #eee;
+                            font-size: 7px;
+                        }
+                        
+                        .summary-item:last-child {
+                            border-bottom: none;
+                            margin-bottom: 0;
+                            padding-bottom: 0;
+                        }
+                        
+                        .summary-label {
+                            font-weight: 600;
+                        }
+                        
+                        .summary-value {
+                            font-weight: 700;
+                            color: var(--primary-color);
+                        }
+                        
+                        .grand-total {
+                            font-size: 8px;
+                            color: #e74c3c;
+                            margin-top: 1mm;
+                            padding-top: 1mm;
+                            border-top: 1px solid var(--light-color);
+                        }
+                        
+                        .document-info {
+                            text-align: right;
+                            font-size: 7px;
+                            color: #6c757d;
+                            margin-bottom: 2mm;
+                        }
+                        
+                        .payment-method, .advance-section {
+                            padding: 1mm;
+                            margin-top: 1mm;
+                            background-color: #f8f9fa;
+                            border-radius: 2px;
+                            border-left: 2px solid var(--secondary-color);
+                        }
+                        
+                        .footer {
+                            text-align: right;
+                            font-size: 7px;
+                            color: #6c757d;
+                            font-style: italic;
+                            margin-top: 3mm;
+                        }
+                        
+                        @media print {
+                            body {
+                                padding: 0;
+                                background: white;
+                            }
+                            
+                            /* Garante que as cores sejam impressas */
+                            th {
+                                background-color: var(--table-header-bg) !important;
+                                color: white !important;
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                            
+                            /* Evita quebras em elementos importantes */
+                            .section, table, .summary-card {
+                                page-break-inside: avoid;
+                            }
+                            
+                            .footer {
+                                position: fixed;
+                                bottom: 5mm;
+                                right: 5mm;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="report-container">
+                        <div class="company-header">
+                            <div class="company-name">Ingressos Web LTDA</div>
+                            <div class="company-info">CNPJ: 58.922.856/0001-02</div>
+                            <div class="company-info">Rua Euclides da Cunha, 443, Jardim Shangri-La A, Londrina – PR</div>
+                        </div>
+                        
+                        <div class="document-info">
+                            <div>${formData.generatedTimestamp}</div>
+                            <div>SR Nº ${formData.documentNumber}</div>
+                        </div>
+                        
+                        <h1>Solicitação de Recursos</h1>
+                        
+                        <div class="section">
+                            <h2>Dados do Evento</h2>
+                            <div class="field-group">
+                                <div class="field-label">Evento - Centro de custo:</div>
+                                <div class="field-value">${formData.eventName || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Local do evento:</div>
+                                <div class="field-value">${formData.eventLocation || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data Início do Evento:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.eventStartDate)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data Fim do Evento:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.eventEndDate)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Dados do Funcionário</h2>
+                            <div class="field-group">
+                                <div class="field-label">Nome:</div>
+                                <div class="field-value">${formData.employeeName || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Chave Pix:</div>
+                                <div class="field-value">${formData.pixKey || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Telefone:</div>
+                                <div class="field-value">${formData.phone || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">RG:</div>
+                                <div class="field-value">${formData.rg || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">CPF:</div>
+                                <div class="field-value">${formData.cpf || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data de Nascimento:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.birthDate)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Nome da Mãe:</div>
+                                <div class="field-value">${formData.motherName || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Endereço:</div>
+                                <div class="field-value">${formData.address || '-'}</div>
+                            </div>
+                            
+                            <div class="payment-method">
+                                <h4>Forma de Pagamento:</h4>
+                                <div class="field-group">
+                                    <div class="field-label">Método selecionado:</div>
+                                    <div class="field-value">${getPaymentMethodText(formData.paymentMethod)}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="advance-section">
+                                <h4>Itens para Adiantamento:</h4>
+                                <div class="field-group">
+                                    <div class="field-label">Adiantar Diárias:</div>
+                                    <div class="field-value">${formData.advanceDaily ? 'Sim' : 'Não'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Adiantar Alimentação:</div>
+                                    <div class="field-value">${formData.advanceFood ? 'Sim' : 'Não'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Adiantar Deslocamento (somente combustível e Uber):</div>
+                                    <div class="field-value">${formData.advanceTransport ? 'Sim' : 'Não'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Adiantar Hospedagem:</div>
+                                    <div class="field-value">${formData.advanceHotel ? 'Sim' : 'Não'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Adiantar Fundo de Emergência:</div>
+                                    <div class="field-value">${formData.advanceEmergency ? 'Sim' : 'Não'}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <div class="field-label">Valor Adiantamento em Conta:</div>
+                                <div class="field-value">${formData.advancePayment ? 'R$ ' + parseFloat(formData.advancePayment).toFixed(2).replace('.', ',') : '-'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Dados da Viagem</h2>
+                            <div class="field-group">
+                                <div class="field-label">Data da Ida:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.departureDate)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data Retorno:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.returnDate)}</div>
+                            </div>
+                            
+                            <h3>Diárias</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Quantidade de Diárias Evento</th>
+                                        <th>Valor Unit Diária</th>
+                                        <th>Valor total de Diárias</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>${formData.dailyQty || '0'}</td>
+                                        <td>${formData.dailyUnitValue ? 'R$ ' + parseFloat(formData.dailyUnitValue).toFixed(2).replace('.', ',') : 'R$ 0,00'}</td>
+                                        <td class="total-row">${formData.dailyTotalValue || 'R$ 0,00'}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h3>Alimentação</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Quantidade</th>
+                                        <th>Valor Unitário</th>
+                                        <th>Valor Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Alimentação Meio Período (40)</td>
+                                        <td>${formData.halfDayMealsQty || '0'}</td>
+                                        <td>${formData.halfDayMealsUnitValue ? 'R$ ' + parseFloat(formData.halfDayMealsUnitValue).toFixed(2).replace('.', ',') : 'R$ 0,00'}</td>
+                                        <td class="total-row">${formData.halfDayMealsTotalValue || 'R$ 0,00'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alimentação Período Inteiro (80)</td>
+                                        <td>${formData.fullDayMealsQty || '0'}</td>
+                                        <td>${formData.fullDayMealsUnitValue ? 'R$ ' + parseFloat(formData.fullDayMealsUnitValue).toFixed(2).replace('.', ',') : 'R$ 0,00'}</td>
+                                        <td class="total-row">${formData.fullDayMealsTotalValue || 'R$ 0,00'}</td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td colspan="3">VALOR ALIMENTAÇÃO + DIÁRIAS:</td>
+                                        <td>${formData.totalFoodAndDailyValue || 'R$ 0,00'}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Deslocamento</h2>
+                            <div class="field-group">
+                                <div class="field-label">Meio de Deslocamento:</div>
+                                <div class="field-value">${getTransportTypeText(formData.transportType)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Carro Alugado?</div>
+                                <div class="field-value">${formData.rentedCar === 'yes' ? 'Sim' : 'Não'}</div>
+                            </div>
+                            
+                            <div>
+                                <div class="field-group">
+                                    <div class="field-label">Pega o carro dia:</div>
+                                    <div class="field-value">${formatDateForDisplay(formData.carPickupDate)}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Devolve o carro dia:</div>
+                                    <div class="field-value">${formatDateForDisplay(formData.carReturnDate)}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Quantidade de Diárias:</div>
+                                    <div class="field-value">${formData.carRentalDays || '0'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Valor do Aluguel:</div>
+                                    <div class="field-value">${formData.carRentalValue ? 'R$ ' + parseFloat(formData.carRentalValue).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Valor por Litro:</div>
+                                    <div class="field-value">${formData.fuelPrice ? 'R$ ' + parseFloat(formData.fuelPrice).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Valor Total de Combustível:</div>
+                                    <div class="field-value">${formData.totalFuelCost ? 'R$ ' + parseFloat(formData.totalFuelCost).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Valor Total de Pedágios:</div>
+                                    <div class="field-value">${formData.totalTollCost ? 'R$ ' + parseFloat(formData.totalTollCost).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Gastos com Uber:</div>
+                                    <div class="field-value">${formData.uberUsed === 'yes' ? 'Sim' : 'Não'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">Valor Total de Uber:</div>
+                                    <div class="field-value">${formData.totalUberCost ? 'R$ ' + parseFloat(formData.totalUberCost).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                                <div class="field-group">
+                                    <div class="field-label">VALOR TOTAL DE DESLOCAMENTO:</div>
+                                    <div class="field-value">${formData.totalTransportCost ? 'R$ ' + parseFloat(formData.totalTransportCost).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Hospedagem</h2>
+                            <div class="field-group">
+                                <div class="field-label">Nome do Hotel / Airbnb:</div>
+                                <div class="field-value">${formData.hotelName || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Endereço do Hotel / Airbnb:</div>
+                                <div class="field-value">${formData.hotelAddress || '-'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data de Entrada:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.hotelCheckin)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Data de Saída:</div>
+                                <div class="field-value">${formatDateForDisplay(formData.hotelCheckout)}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Quantidade de Diárias:</div>
+                                <div class="field-value">${formData.hotelNights || '0'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">Valor da Diária:</div>
+                                <div class="field-value">${formData.hotelDailyRate ? 'R$ ' + parseFloat(formData.hotelDailyRate).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-label">VALOR TOTAL HOTEL / AIRBNB</div>
+                                <div class="field-value">${formData.totalHotelCost ? 'R$ ' + parseFloat(formData.totalHotelCost).toFixed(2).replace('.', ',') : 'R$ 0,00'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <h3>Resumo da Solicitação</h3>
+                            <div class="summary-item">
+                                <span class="summary-label">Diárias:</span>
+                                <span class="summary-value">${formData.summaryDaily || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Alimentação:</span>
+                                <span class="summary-value">${formData.summaryFood || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Deslocamento:</span>
+                                <span class="summary-value">${formData.summaryTransport || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Hospedagem:</span>
+                                <span class="summary-value">${formData.summaryHotel || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Fundo de Emergência:</span>
+                                <span class="summary-value">${formData.summaryEmergency || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Adiantamento em Conta:</span>
+                                <span class="summary-value">${formData.summaryAdvancePayment || 'R$ 0,00'}</span>
+                            </div>
+                            <div class="summary-item grand-total">
+                                <span class="summary-label">VALOR TOTAL DA SOLICITAÇÃO:</span>
+                                <span class="summary-value">${formData.grandTotal || 'R$ 0,00'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            return reportHTML;
+        }
+
+        // Show report in modal
+        function showReportModal() {
+            const modal = document.getElementById('reportModal');
+            const reportContent = document.getElementById('reportContent');
+            const closeBtn = document.querySelector('.close');
+            const closeModalBtn = document.querySelector('.modal-btn-close');
+            const printBtn = document.getElementById('printReportBtn');
+            
+            // Generate report HTML
+            const reportHTML = generateReportHTML();
+            reportContent.innerHTML = reportHTML;
+            
+            // Open modal
+            modal.style.display = 'block';
+            
+            // Close modal when clicking X
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            // Close modal when clicking close button
+            closeModalBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            // Print report
+            printBtn.onclick = function() {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(reportHTML);
+                printWindow.document.close();
+                printWindow.print();
+            }
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setCurrentTimestamp();
+            setupSectionToggles();
+            populateEmployeeDropdown();
+            calculateAll();
+            
+            // Set up employee selection
+            document.getElementById('employeeSelect').addEventListener('change', function() {
+                if (this.value) {
+                    fillEmployeeData(this.value);
+                }
+            });
+            
+            // Set up payment method selection
+            document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+                radio.addEventListener('change', updatePaymentFields);
+            });
+            
+            // Set up advance payment checkboxes
+            document.querySelectorAll('.advance-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', calculateAdvancePayment);
+            });
+            
+            // Initialize payment fields
+            updatePaymentFields();
+            
+            // Set up event listeners for all input fields
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('change', calculateAll);
+                input.addEventListener('input', calculateAll);
+            });
+            
+            // Set up download button
+            document.getElementById('downloadBtn').addEventListener('click', generatePDF);
+            
+            // Set up report button
+            document.getElementById('reportBtn').addEventListener('click', showReportModal);
+            
+            // Calculate fuel liters when distance or consumption changes
+            document.getElementById('distanceKm').addEventListener('input', function() {
+                const distance = parseFloat(this.value) || 0;
+                const consumption = parseFloat(document.getElementById('carConsumption').value) || 1;
+                document.getElementById('fuelLiters').value = (distance / consumption).toFixed(2);
+                calculateAll();
+            });
+            
+            document.getElementById('carConsumption').addEventListener('input', function() {
+                const distance = parseFloat(document.getElementById('distanceKm').value) || 0;
+                const consumption = parseFloat(this.value) || 1;
+                document.getElementById('fuelLiters').value = (distance / consumption).toFixed(2);
+                calculateAll();
+            });
+            
+            // Update Uber field visibility
+            document.getElementById('uberUsed').addEventListener('change', function() {
+                calculateAll();
+            });
+        });
+    </script>
+</body>
+</html>
